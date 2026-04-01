@@ -1,0 +1,4 @@
+﻿Rating,Engine Name,Family,Access,Source,Language,Eval Type,Release Year
+3600,Stockfish 16.1,Stockfish,Public,Open,C++,NNUE,2024
+3500,Lc0 (Leela),Lc0,Public,Open,C++,NNUE,2024
+3300,Old Engine v1,Other,Private,Closed,C,HCE,2010

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ChessTubeTree</title>
+    
+    <style>
+        /* ====== DEFAULT STYLE: DARK MODE ====== */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            margin: 40px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: #2d2d2d;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #444;
+            text-align: center;
+        }
+        th {
+            background-color: #3a7bd5;
+            color: white;
+            vertical-align: top;
+        }
+        tr:hover {
+            background-color: #3d3d3d;
+        }
+
+        /* --- Custom Checkbox Dropdown Styling --- */
+        details.filter-dropdown {
+            position: relative;
+            display: inline-block;
+            margin-top: 8px;
+            font-weight: normal;
+        }
+        details.filter-dropdown summary {
+            background-color: #444;
+            color: white;
+            padding: 4px 8px;
+            border: 1px solid #777;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        details.filter-dropdown summary:hover {
+            background-color: #555;
+        }
+        .checkbox-list {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            border: 1px solid #777;
+            padding: 10px;
+            z-index: 100;
+            text-align: left;
+            min-width: 100px;
+            box-shadow: 0px 4px 8px rgba(0,0,0,0.6);
+            border-radius: 3px;
+            margin-top: 2px;
+        }
+        .checkbox-list label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            color: white;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        /* ====== OPTION 2: CLASSIC WOODEN ====== */
+        body.wood {
+            font-family: "Courier New", Courier, monospace;
+            background-color: #e0d0b6; 
+            color: #231f20;
+        }
+        body.wood table {
+            background-color: #fdfdfd;
+            border: 4px solid #4b382a; 
+        }
+        body.wood th, body.wood td {
+            border-bottom: 1px solid #4b382a;
+        }
+        body.wood th {
+            background-color: #4b382a;
+            color: #f3e6d8;
+        }
+        body.wood tr:nth-child(even) {
+            background-color: #e6d8c3; 
+        }
+        body.wood tr:hover {
+            background-color: #d1bfae;
+        }
+        body.wood details.filter-dropdown summary {
+            background-color: #e6d8c3;
+            color: #231f20;
+            border: 1px solid #4b382a;
+        }
+        body.wood details.filter-dropdown summary:hover {
+            background-color: #d1bfae;
+        }
+        body.wood .checkbox-list {
+            background-color: #fdfdfd;
+            border: 2px solid #4b382a;
+        }
+        body.wood .checkbox-list label {
+            color: #231f20;
+        }
+    </style>
+
+</head>
+<body>
+
+    <h1>ChessTubeTree</h1>
+    
+    <p><strong>Last Update:</strong> April 2, 2026</p>
+
+    <p>
+        <label for="themeSelector"><strong>Choose Theme: </strong></label>
+        <select id="themeSelector" onchange="changeTheme()">
+            <option value="dark">Dark Mode</option>
+            <option value="wood">Classic Wooden</option>
+        </select>
+    </p>
+
+    <p>Rankings and ratings for various chess engines. Always sorted by highest rating.</p>
+
+    <table id="engineTable">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Rating</th>
+                <th>Engine Name</th>
+                <th>
+                    Family <br>
+                    <details class="filter-dropdown">
+                        <summary>Filter</summary>
+                        <div class="checkbox-list">
+                            <label><input type="checkbox" value="Stockfish" checked onchange="filterTable()"> Stockfish</label>
+                            <label><input type="checkbox" value="Lc0" checked onchange="filterTable()"> Lc0</label>
+                            <label><input type="checkbox" value="Other" checked onchange="filterTable()"> Other</label>
+                        </div>
+                    </details>
+                </th>
+                <th>
+                    Access <br>
+                    <details class="filter-dropdown">
+                        <summary>Filter</summary>
+                        <div class="checkbox-list">
+                            <label><input type="checkbox" value="Public" checked onchange="filterTable()"> Public</label>
+                            <label><input type="checkbox" value="Private" checked onchange="filterTable()"> Private</label>
+                        </div>
+                    </details>
+                </th>
+                <th>
+                    Source <br>
+                    <details class="filter-dropdown">
+                        <summary>Filter</summary>
+                        <div class="checkbox-list">
+                            <label><input type="checkbox" value="Open" checked onchange="filterTable()"> Open</label>
+                            <label><input type="checkbox" value="Closed" checked onchange="filterTable()"> Closed</label>
+                        </div>
+                    </details>
+                </th>
+                <th>
+                    Language <br>
+                    <details class="filter-dropdown">
+                        <summary>Filter</summary>
+                        <div class="checkbox-list">
+                            <label><input type="checkbox" value="C++" checked onchange="filterTable()"> C++</label>
+                            <label><input type="checkbox" value="C" checked onchange="filterTable()"> C</label>
+                            <label><input type="checkbox" value="Rust" checked onchange="filterTable()"> Rust</label>
+                        </div>
+                    </details>
+                </th>
+                <th>
+                    Eval Type <br>
+                    <details class="filter-dropdown">
+                        <summary>Filter</summary>
+                        <div class="checkbox-list">
+                            <label><input type="checkbox" value="NNUE" checked onchange="filterTable()"> NNUE</label>
+                            <label><input type="checkbox" value="HCE" checked onchange="filterTable()"> HCE</label>
+                        </div>
+                    </details>
+                </th>
+                <th>
+                    Release Year <br>
+                    <details class="filter-dropdown">
+                        <summary>Filter</summary>
+                        <div class="checkbox-list">
+                            <label><input type="checkbox" value="2024" checked onchange="filterTable()"> 2024</label>
+                            <label><input type="checkbox" value="2010" checked onchange="filterTable()"> 2010</label>
+                        </div>
+                    </details>
+                </th>
+            </tr>
+        </thead>
+        
+        <!-- We leave tbody empty! JavaScript will fill it with your CSV data -->
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        function changeTheme() {
+            var selectedTheme = document.getElementById("themeSelector").value;
+            if (selectedTheme === "wood") {
+                document.body.className = "wood";
+            } else {
+                document.body.className = "";
+            }
+        }
+
+        function updateRowNumbers() {
+            var table = document.getElementById("engineTable");
+            var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+            var count = 1;
+            
+            for (var i = 0; i < rows.length; i++) {
+                if (rows[i].style.display !== "none") {
+                    rows[i].getElementsByTagName("td")[0].innerText = count;
+                    count++;
+                }
+            }
+        }
+
+        function forceSortByRating() {
+            var table = document.getElementById("engineTable");
+            var tbody = table.getElementsByTagName("tbody")[0];
+            var rowsArray = Array.prototype.slice.call(tbody.getElementsByTagName("tr"));
+
+            rowsArray.sort(function(a, b) {
+                var ratingA = parseInt(a.getElementsByTagName("td")[1].innerText.trim());
+                var ratingB = parseInt(b.getElementsByTagName("td")[1].innerText.trim());
+                return ratingB - ratingA; 
+            });
+
+            for (var i = 0; i < rowsArray.length; i++) {
+                tbody.appendChild(rowsArray[i]);
+            }
+        }
+
+        function filterTable() {
+            var table = document.getElementById("engineTable");
+            var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+            
+            var filterColumns = [3, 4, 5, 6, 7, 8];
+
+            for (var i = 0; i < rows.length; i++) {
+                var showRow = true;
+                
+                for (var k = 0; k < filterColumns.length; k++) {
+                    var colIndex = filterColumns[k];
+                    var cellText = rows[i].getElementsByTagName("td")[colIndex].innerText.trim();
+                    
+                    var headerCell = table.getElementsByTagName("th")[colIndex];
+                    var checkboxes = headerCell.querySelectorAll("input[type='checkbox']");
+                    
+                    var passedThisFilter = false;
+                    for (var c = 0; c < checkboxes.length; c++) {
+                        if (checkboxes[c].checked && checkboxes[c].value === cellText) {
+                            passedThisFilter = true;
+                            break;
+                        }
+                    }
+                    
+                    if (!passedThisFilter) {
+                        showRow = false;
+                        break; 
+                    }
+                }
+                
+                if (showRow) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+            
+            updateRowNumbers();
+        }
+
+        // --- NEW FUNCTION: READ CSV DATA ---
+        async function loadCSVData() {
+            try {
+                // Fetch the CSV file
+                const response = await fetch('data.csv');
+                if (!response.ok) throw new Error("Network response was not ok");
+                
+                const csvText = await response.text();
+                const lines = csvText.trim().split('\n');
+                const tbody = document.querySelector("#engineTable tbody");
+                
+                // Loop through lines, skipping the first line (the header)
+                for (let i = 1; i < lines.length; i++) {
+                    const columns = lines[i].split(',');
+                    
+                    // Skip any empty rows at the bottom of the excel file
+                    if (columns.length < 8) continue; 
+
+                    const tr = document.createElement('tr');
+                    
+                    // 1. Create empty cell for the "#" column
+                    const tdNum = document.createElement('td');
+                    tr.appendChild(tdNum);
+                    
+                    // 2. Create cells for Excel columns (Rating through Year)
+                    for (let j = 0; j < columns.length; j++) {
+                        const td = document.createElement('td');
+                        td.innerText = columns[j].trim();
+                        tr.appendChild(td);
+                    }
+                    
+                    tbody.appendChild(tr);
+                }
+                
+                // Once data is loaded, apply sorting and filtering
+                forceSortByRating();
+                filterTable();
+                
+            } catch (error) {
+                console.log("Could not load CSV. This is normal when testing locally!");
+                document.querySelector("#engineTable tbody").innerHTML = "<tr><td colspan='9'><i>Data will appear here once the site is hosted on a server!</i></td></tr>";
+            }
+        }
+
+        window.onload = function() {
+            loadCSVData();
+        };
+    </script>
+
+</body>
+</html>
