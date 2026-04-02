@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>ChessTubeTree</title>
     
     <!-- ==========================================
@@ -35,8 +36,8 @@
         }
         tr:hover { background-color: #3d3d3d; }
         
+        /* Column Color Coding (Dark) */
         .col-main-rating { color: #ffd700; font-weight: bold; font-size: 16px; } 
-        /* Added white-space: nowrap so the dual ratings like "3600 (3852)" don't break into two lines */
         .col-list-rating { color: #87cefa; white-space: nowrap; } 
         .col-meta { color: #aaaaaa; } 
         .col-name { color: #ffffff; font-weight: bold; }
@@ -79,15 +80,13 @@
         body.terminal .col-name { color: #00ff00; font-weight: bold; }
 
         /* ----------------------------------------
-           DROPDOWN CHECKBOX FILTERS
+           FILTERS & WEIGHTS PANELS
            ---------------------------------------- */
         details.filter-dropdown { position: relative; display: inline-block; margin-top: 8px; font-weight: normal; }
         details.filter-dropdown summary {
             background-color: #444; color: white; padding: 4px 8px;
             border: 1px solid #777; border-radius: 3px; cursor: pointer; font-size: 12px;
         }
-        details.filter-dropdown summary:hover { background-color: #555; }
-        
         .checkbox-list {
             position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
             background-color: #333; border: 1px solid #777; padding: 10px; z-index: 100;
@@ -95,29 +94,13 @@
         }
         .checkbox-list label { display: block; margin-bottom: 6px; font-size: 13px; color: white; cursor: pointer; white-space: nowrap; }
 
-        body.wood details.filter-dropdown summary { background-color: #e6d8c3; color: #231f20; border: 1px solid #4b382a; }
-        body.wood details.filter-dropdown summary:hover { background-color: #d1bfae; }
-        body.wood .checkbox-list { background-color: #fdfdfd; border: 2px solid #4b382a; }
-        body.wood .checkbox-list label { color: #231f20; }
-        
-        body.terminal details.filter-dropdown summary { background-color: #002200; color: #00ff00; border: 1px solid #00ff00; }
-        body.terminal details.filter-dropdown summary:hover { background-color: #004400; }
-        body.terminal .checkbox-list { background-color: #000000; border: 1px solid #00ff00; }
-        body.terminal .checkbox-list label { color: #00ff00; }
-
-        /* ----------------------------------------
-           WEIGHTS CONTROL PANEL
-           ---------------------------------------- */
         .weights-panel { background-color: rgba(0,0,0,0.1); padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #555; }
-        body.wood .weights-panel { border: 2px dashed #4b382a; }
-        body.terminal .weights-panel { border: 1px solid #00ff00; background-color: #001100; }
-        
         .weights-controls { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
         .weight-box { display: flex; flex-direction: column; align-items: center; font-size: 13px; }
         .weight-box input { width: 50px; text-align: center; padding: 4px; margin-top: 4px; }
-        
-        body.terminal .weight-box input { background-color: #000; border: 1px solid #00ff00; color: #00ff00; }
         .math-note { font-size: 12px; margin-top: 15px; font-style: italic; opacity: 0.8; }
+
+        .about-section { margin-top: 50px; padding: 20px; border-top: 1px solid #444; line-height: 1.6; font-size: 14px; }
     </style>
 </head>
 <body>
@@ -126,7 +109,7 @@
          WEBSITE HEADER & CONTROLS
          ========================================== -->
     <h1>ChessTubeTree</h1>
-    <p><strong>Last Update:</strong> April 2, 2026</p>
+    <p><strong>Last Update:</strong> 3 April 2026</p>
 
     <p>
         <label for="themeSelector"><strong>Choose Theme: </strong></label>
@@ -195,219 +178,24 @@
             </tr>
         </thead>
         <tbody>
+            <!-- Data loaded via JavaScript -->
         </tbody>
     </table>
 
+    <div class="about-section">
+        <h2>About & Credits</h2>
+        <p>ChessTubeTree provides a normalized, weighted average of the world's leading chess engine rating pools.</p>
+        <p>Special thanks to the maintainers of <strong>CCRL, SP-CC, Ipman Chess, and CEGT</strong> for their tireless testing and contribution to the computer chess community.</p>
+    </div>
+
     <!-- ==========================================
-         JAVASCRIPT (THE "BRAIN" OF THE SITE)
+         JAVASCRIPT (THE "BRAIN")
          ========================================== -->
     <script>
-        // --- Theme Switcher ---
         function changeTheme() {
             var selectedTheme = document.getElementById("themeSelector").value;
             document.body.className = (selectedTheme === "dark") ? "" : selectedTheme;
         }
 
-        // --- Keep the "#" column numbered 1, 2, 3... ---
         function updateRowNumbers() {
-            var table = document.getElementById("engineTable");
-            var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-            var count = 1;
-            for (var i = 0; i < rows.length; i++) {
-                if (rows[i].style.display !== "none") {
-                    rows[i].getElementsByTagName("td")[0].innerText = count;
-                    count++;
-                }
-            }
-        }
-
-        // --- Sorting by Main Rating (Highest to Lowest) ---
-        function forceSortByRating() {
-            var table = document.getElementById("engineTable");
-            var tbody = table.getElementsByTagName("tbody")[0];
-            var rowsArray = Array.prototype.slice.call(tbody.getElementsByTagName("tr"));
-
-            rowsArray.sort(function(a, b) {
-                var ratingA = parseInt(a.getElementsByTagName("td")[1].innerText) || 0;
-                var ratingB = parseInt(b.getElementsByTagName("td")[1].innerText) || 0;
-                return ratingB - ratingA; 
-            });
-
-            for (var i = 0; i < rowsArray.length; i++) {
-                tbody.appendChild(rowsArray[i]);
-            }
-            updateRowNumbers();
-        }
-
-        // --- Checkbox Filtering Logic ---
-        function filterTable() {
-            var table = document.getElementById("engineTable");
-            var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-            var filterColumns = [3, 4, 5, 6, 7, 8]; 
-
-            for (var i = 0; i < rows.length; i++) {
-                var showRow = true;
-                
-                for (var k = 0; k < filterColumns.length; k++) {
-                    var colIndex = filterColumns[k];
-                    var cellText = rows[i].getElementsByTagName("td")[colIndex].innerText.trim();
-                    var headerCell = table.getElementsByTagName("th")[colIndex];
-                    var checkboxes = headerCell.querySelectorAll("input[type='checkbox']");
-                    
-                    var passedThisFilter = false;
-                    for (var c = 0; c < checkboxes.length; c++) {
-                        if (checkboxes[c].checked && checkboxes[c].value === cellText) {
-                            passedThisFilter = true;
-                            break;
-                        }
-                    }
-                    if (!passedThisFilter) { showRow = false; break; }
-                }
-                
-                rows[i].style.display = showRow ? "" : "none";
-            }
-            updateRowNumbers();
-        }
-
-        // --- Math Engine (Weighted Ratings) ---
-        function calculateRatings() {
-            var wCcrl40 = parseFloat(document.getElementById("w-ccrl4040").value) || 0;
-            var wCcrlBl = parseFloat(document.getElementById("w-ccrlblitz").value) || 0;
-            var wSpcc   = parseFloat(document.getElementById("w-spcc").value) || 0;
-            var wIpman  = parseFloat(document.getElementById("w-ipman").value) || 0;
-            var wCegt   = parseFloat(document.getElementById("w-cegt").value) || 0;
-
-            var rows = document.querySelectorAll("#engineTable tbody tr");
-
-            rows.forEach(row => {
-                var totalScore = 0;
-                var totalWeight = 0;
-
-                // We read from the hidden original data, NOT from the displayed text. 
-                // This protects the math from breaking when the text says "3623 (3877)".
-                var valCcrl40 = parseFloat(row.dataset.ccrl4040);
-                var valCcrlBl = parseFloat(row.dataset.ccrlblitz);
-                var valSpcc   = parseFloat(row.dataset.spcc);
-                var valIpman  = parseFloat(row.dataset.ipman);
-                var valCegt   = parseFloat(row.dataset.cegt);
-
-                // Apply scales (1.07 or 1.02) then multiply by user weight
-                if (!isNaN(valCcrl40)) { totalScore += (valCcrl40 * 1.07) * wCcrl40; totalWeight += wCcrl40; }
-                if (!isNaN(valCcrlBl)) { totalScore += (valCcrlBl * 1.02) * wCcrlBl; totalWeight += wCcrlBl; }
-                if (!isNaN(valSpcc))   { totalScore += valSpcc * wSpcc;              totalWeight += wSpcc; }
-                if (!isNaN(valIpman))  { totalScore += (valIpman * 1.07) * wIpman;   totalWeight += wIpman; }
-                if (!isNaN(valCegt))   { totalScore += (valCegt * 1.07) * wCegt;     totalWeight += wCegt; }
-
-                var finalRating = (totalWeight > 0) ? Math.round(totalScore / totalWeight) : "N/A";
-                row.getElementsByTagName("td")[1].innerText = finalRating;
-            });
-
-            forceSortByRating();
-        }
-
-        // --- Auto-Generate Filter Dropdowns ---
-        function populateFilters(colIndex, containerId) {
-            var table = document.getElementById("engineTable");
-            var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-            var uniqueValues = new Set();
-            
-            for (var i = 0; i < rows.length; i++) {
-                uniqueValues.add(rows[i].getElementsByTagName("td")[colIndex].innerText.trim());
-            }
-
-            var container = document.getElementById(containerId);
-            container.innerHTML = ""; 
-            
-            uniqueValues.forEach(val => {
-                var label = document.createElement("label");
-                label.innerHTML = `<input type="checkbox" value="${val}" checked onchange="filterTable()"> ${val}`;
-                container.appendChild(label);
-            });
-        }
-
-        // --- Helper Function for Dual Display "Original (Scaled)" ---
-        function formatRatingCell(rawString, multiplier) {
-            if (rawString === "#N/A" || !rawString.trim()) return "-";
-            
-            let original = parseFloat(rawString);
-            
-            // If the multiplier is exactly 1 (like SP-CC), just show the original number
-            if (multiplier === 1) return original;
-            
-            // Otherwise, calculate the scaled version and show both
-            let scaled = Math.round(original * multiplier);
-            return `${original} (${scaled})`;
-        }
-
-        // --- Fetch and Build Table from CSV ---
-        async function loadCSVData() {
-            try {
-                const response = await fetch('data.csv?t=' + new Date().getTime());
-                if (!response.ok) throw new Error("Network response was not ok");
-                
-                const csvText = await response.text();
-                const lines = csvText.trim().split('\n');
-                const tbody = document.querySelector("#engineTable tbody");
-                
-                for (let i = 1; i < lines.length; i++) {
-                    const columns = lines[i].split(',');
-                    if (columns.length < 13) continue; 
-
-                    const tr = document.createElement('tr');
-                    
-                    // Store original numerical ratings invisibly inside the row 
-                    tr.dataset.ccrl4040 = columns[8].trim();
-                    tr.dataset.ccrlblitz = columns[9].trim();
-                    tr.dataset.spcc = columns[10].trim();
-                    tr.dataset.ipman = columns[11].trim();
-                    tr.dataset.cegt = columns[12].trim();
-
-                    let tds = [
-                        { text: "", class: "" }, 
-                        { text: "", class: "col-main-rating" }, 
-                        { text: columns[1].trim(), class: "col-name" }, 
-                        { text: columns[2].trim(), class: "col-meta" }, 
-                        { text: columns[3].trim(), class: "col-meta" }, 
-                        { text: columns[4].trim(), class: "col-meta" }, 
-                        { text: columns[5].trim(), class: "col-meta" }, 
-                        { text: columns[6].trim(), class: "col-meta" }, 
-                        { text: columns[7].trim(), class: "col-meta" }, 
-                        
-                        // We use our new formatRatingCell helper to generate "Original (Scaled)" text
-                        { text: formatRatingCell(columns[8], 1.07), class: "col-list-rating" }, 
-                        { text: formatRatingCell(columns[9], 1.02), class: "col-list-rating" }, 
-                        { text: formatRatingCell(columns[10], 1), class: "col-list-rating" }, // Multiplier 1 for SP-CC
-                        { text: formatRatingCell(columns[11], 1.07), class: "col-list-rating" }, 
-                        { text: formatRatingCell(columns[12], 1.07), class: "col-list-rating" }  
-                    ];
-
-                    tds.forEach(cell => {
-                        const td = document.createElement('td');
-                        td.innerText = cell.text;
-                        if(cell.class) td.className = cell.class;
-                        tr.appendChild(td);
-                    });
-                    
-                    tbody.appendChild(tr);
-                }
-                
-                populateFilters(3, "filter-family");
-                populateFilters(4, "filter-access");
-                populateFilters(5, "filter-source");
-                populateFilters(6, "filter-lang");
-                populateFilters(7, "filter-eval");
-                populateFilters(8, "filter-year");
-
-                calculateRatings();
-                filterTable();
-                
-            } catch (error) {
-                console.log("Waiting for server hosting!");
-                document.querySelector("#engineTable tbody").innerHTML = "<tr><td colspan='14'><i>Data will appear here once the site is hosted on a server!</i></td></tr>";
-            }
-        }
-
-        window.onload = function() { loadCSVData(); };
-    </script>
-</body>
-</html>
+            var rows = document.
