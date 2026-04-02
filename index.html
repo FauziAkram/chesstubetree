@@ -3,8 +3,13 @@
 <head>
     <title>ChessTubeTree</title>
     
+    <!-- ==========================================
+         CSS STYLESHEETS (VISUAL DESIGN)
+         ========================================== -->
     <style>
-        /* ====== DEFAULT STYLE: DARK MODE ====== */
+        /* ----------------------------------------
+           THEME 1: DEFAULT DARK MODE
+           ---------------------------------------- */
         body {
             font-family: Arial, sans-serif;
             background-color: #1e1e1e;
@@ -24,21 +29,22 @@
             font-size: 14px;
         }
         th {
-            background-color: #3a7bd5;
+            background-color: #3a7bd5; /* Blue header */
             color: white;
             vertical-align: top;
         }
         tr:hover {
-            background-color: #3d3d3d;
+            background-color: #3d3d3d; /* Highlight row on hover */
         }
-
-        /* --- Column Color Coding (Dark Mode) --- */
-        .col-main-rating { color: #ffd700; font-weight: bold; font-size: 16px; } 
-        .col-list-rating { color: #87cefa; } 
-        .col-meta { color: #aaaaaa; } 
+        /* Color coding for columns in Dark Mode */
+        .col-main-rating { color: #ffd700; font-weight: bold; font-size: 16px; } /* Gold */
+        .col-list-rating { color: #87cefa; } /* Light Blue */
+        .col-meta { color: #aaaaaa; } /* Light Grey */
         .col-name { color: #ffffff; font-weight: bold; }
 
-        /* ====== OPTION 2: CLASSIC WOODEN ====== */
+        /* ----------------------------------------
+           THEME 2: CLASSIC WOODEN
+           ---------------------------------------- */
         body.wood {
             font-family: "Courier New", Courier, monospace;
             background-color: #e0d0b6; 
@@ -49,46 +55,81 @@
         body.wood th { background-color: #4b382a; color: #f3e6d8; }
         body.wood tr:nth-child(even) { background-color: #e6d8c3; }
         body.wood tr:hover { background-color: #d1bfae; }
-        
-        /* --- Column Color Coding (Wooden Mode) --- */
-        body.wood .col-main-rating { color: #800000; font-weight: bold; font-size: 16px; } 
-        body.wood .col-list-rating { color: #005f00; font-weight: bold; } 
+        /* Color coding for columns in Wooden Mode */
+        body.wood .col-main-rating { color: #800000; font-weight: bold; font-size: 16px; } /* Maroon */
+        body.wood .col-list-rating { color: #005f00; font-weight: bold; } /* Dark Green */
         body.wood .col-meta { color: #555555; }
         body.wood .col-name { color: #000000; font-weight: bold; }
 
-        /* --- Custom Checkbox Dropdown Styling --- */
+        /* ----------------------------------------
+           THEME 3: TERMINAL HACKER (NEW)
+           ---------------------------------------- */
+        body.terminal {
+            font-family: "Consolas", "Monaco", monospace;
+            background-color: #050505; 
+            color: #00ff00; /* Neon Green */
+        }
+        body.terminal table { background-color: #000000; border: 2px solid #00ff00; }
+        body.terminal th, body.terminal td { border-bottom: 1px dashed #005500; }
+        body.terminal th { background-color: #002200; color: #00ff00; }
+        body.terminal tr:hover { background-color: #001100; }
+        /* Color coding for columns in Terminal Mode */
+        body.terminal .col-main-rating { color: #ffffff; font-weight: bold; font-size: 16px; text-shadow: 0 0 5px #fff; } 
+        body.terminal .col-list-rating { color: #00cc00; } 
+        body.terminal .col-meta { color: #008800; }
+        body.terminal .col-name { color: #00ff00; font-weight: bold; }
+
+        /* ----------------------------------------
+           DROPDOWN CHECKBOX FILTERS (APPLIES TO ALL THEMES)
+           ---------------------------------------- */
         details.filter-dropdown { position: relative; display: inline-block; margin-top: 8px; font-weight: normal; }
         details.filter-dropdown summary {
             background-color: #444; color: white; padding: 4px 8px;
             border: 1px solid #777; border-radius: 3px; cursor: pointer; font-size: 12px;
         }
         details.filter-dropdown summary:hover { background-color: #555; }
-        body.wood details.filter-dropdown summary { background-color: #e6d8c3; color: #231f20; border: 1px solid #4b382a; }
-        body.wood details.filter-dropdown summary:hover { background-color: #d1bfae; }
         
+        /* Dropdown pop-out box */
         .checkbox-list {
             position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
             background-color: #333; border: 1px solid #777; padding: 10px; z-index: 100;
             text-align: left; min-width: 100px; box-shadow: 0px 4px 8px rgba(0,0,0,0.6); border-radius: 3px; margin-top: 2px;
         }
-        body.wood .checkbox-list { background-color: #fdfdfd; border: 2px solid #4b382a; }
         .checkbox-list label { display: block; margin-bottom: 6px; font-size: 13px; color: white; cursor: pointer; white-space: nowrap; }
-        body.wood .checkbox-list label { color: #231f20; }
 
-        /* --- Weights Control Panel --- */
+        /* Dropdown visual adjustments for specific themes */
+        body.wood details.filter-dropdown summary { background-color: #e6d8c3; color: #231f20; border: 1px solid #4b382a; }
+        body.wood details.filter-dropdown summary:hover { background-color: #d1bfae; }
+        body.wood .checkbox-list { background-color: #fdfdfd; border: 2px solid #4b382a; }
+        body.wood .checkbox-list label { color: #231f20; }
+        
+        body.terminal details.filter-dropdown summary { background-color: #002200; color: #00ff00; border: 1px solid #00ff00; }
+        body.terminal details.filter-dropdown summary:hover { background-color: #004400; }
+        body.terminal .checkbox-list { background-color: #000000; border: 1px solid #00ff00; }
+        body.terminal .checkbox-list label { color: #00ff00; }
+
+        /* ----------------------------------------
+           WEIGHTS CONTROL PANEL
+           ---------------------------------------- */
         .weights-panel {
-            background-color: rgba(0,0,0,0.1); padding: 15px; border-radius: 5px; margin-bottom: 20px;
-            border: 1px solid #555;
+            background-color: rgba(0,0,0,0.1); padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #555;
         }
         body.wood .weights-panel { border: 2px dashed #4b382a; }
+        body.terminal .weights-panel { border: 1px solid #00ff00; background-color: #001100; }
+        
         .weights-controls { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
         .weight-box { display: flex; flex-direction: column; align-items: center; font-size: 13px; }
         .weight-box input { width: 50px; text-align: center; padding: 4px; margin-top: 4px; }
+        
+        body.terminal .weight-box input { background-color: #000; border: 1px solid #00ff00; color: #00ff00; }
         .math-note { font-size: 12px; margin-top: 15px; font-style: italic; opacity: 0.8; }
     </style>
 </head>
 <body>
 
+    <!-- ==========================================
+         WEBSITE HEADER & CONTROLS
+         ========================================== -->
     <h1>ChessTubeTree</h1>
     <p><strong>Last Update:</strong> May 20, 2024</p>
 
@@ -97,10 +138,11 @@
         <select id="themeSelector" onchange="changeTheme()">
             <option value="dark">Dark Mode</option>
             <option value="wood">Classic Wooden</option>
+            <option value="terminal">Terminal Hacker</option>
         </select>
     </p>
 
-    <!-- WEIGHTS CONTROL PANEL -->
+    <!-- Control panel for user-adjusted math weights -->
     <div class="weights-panel">
         <div>
             <strong>Adjust List Weights:</strong>
@@ -131,34 +173,26 @@
         </div>
         
         <div class="math-note">
-            Note: Due to scalability differences between rating pools, the base ratings from <strong>CCRL 40/40, Ipman, and CEGT</strong> are multiplied by <strong>1.07</strong> prior to applying these weights to accurately calculate the Main Rating.
+            Note: Due to scalability differences between rating pools, the base ratings from <strong>CCRL 40/40, Ipman, and CEGT</strong> are multiplied by <strong>1.07</strong>, and <strong>CCRL Blitz</strong> by <strong>1.02</strong> prior to applying these weights to accurately calculate the Main Rating.
         </div>
     </div>
 
+    <!-- ==========================================
+         MAIN DATA TABLE
+         ========================================== -->
     <table id="engineTable">
         <thead>
             <tr>
                 <th>#</th>
                 <th>Main Rating</th>
                 <th>Engine Name</th>
-                <th>Family <br>
-                    <details class="filter-dropdown"><summary>Filter</summary><div class="checkbox-list" id="filter-family"></div></details>
-                </th>
-                <th>Access <br>
-                    <details class="filter-dropdown"><summary>Filter</summary><div class="checkbox-list" id="filter-access"></div></details>
-                </th>
-                <th>Source <br>
-                    <details class="filter-dropdown"><summary>Filter</summary><div class="checkbox-list" id="filter-source"></div></details>
-                </th>
-                <th>Language <br>
-                    <details class="filter-dropdown"><summary>Filter</summary><div class="checkbox-list" id="filter-lang"></div></details>
-                </th>
-                <th>Eval Type <br>
-                    <details class="filter-dropdown"><summary>Filter</summary><div class="checkbox-list" id="filter-eval"></div></details>
-                </th>
-                <th>Release Year <br>
-                    <details class="filter-dropdown"><summary>Filter</summary><div class="checkbox-list" id="filter-year"></div></details>
-                </th>
+                <!-- The empty divs inside these headers will be auto-filled with checkboxes by the JavaScript -->
+                <th>Family <br><details class="filter-dropdown"><summary>Filter</summary><div class="checkbox-list" id="filter-family"></div></details></th>
+                <th>Access <br><details class="filter-dropdown"><summary>Filter</summary><div class="checkbox-list" id="filter-access"></div></details></th>
+                <th>Source <br><details class="filter-dropdown"><summary>Filter</summary><div class="checkbox-list" id="filter-source"></div></details></th>
+                <th>Language <br><details class="filter-dropdown"><summary>Filter</summary><div class="checkbox-list" id="filter-lang"></div></details></th>
+                <th>Eval Type <br><details class="filter-dropdown"><summary>Filter</summary><div class="checkbox-list" id="filter-eval"></div></details></th>
+                <th>Release Year <br><details class="filter-dropdown"><summary>Filter</summary><div class="checkbox-list" id="filter-year"></div></details></th>
                 
                 <th>CCRL 40/40</th>
                 <th>CCRL Blitz</th>
@@ -167,17 +201,25 @@
                 <th>CEGT</th>
             </tr>
         </thead>
+        <!-- Tbody starts empty. It is populated by the loadCSVData() function below -->
         <tbody>
         </tbody>
     </table>
 
+    <!-- ==========================================
+         JAVASCRIPT (THE "BRAIN" OF THE SITE)
+         ========================================== -->
     <script>
+        // --- 1. Theme Switcher ---
+        // Reads the dropdown and applies the selected CSS class to the whole body
         function changeTheme() {
             var selectedTheme = document.getElementById("themeSelector").value;
-            if (selectedTheme === "wood") { document.body.className = "wood"; } 
-            else { document.body.className = ""; }
+            // If dark is selected, we want no extra class (default). Otherwise, apply the theme name.
+            document.body.className = (selectedTheme === "dark") ? "" : selectedTheme;
         }
 
+        // --- 2. Keep the "#" column strictly numbered 1, 2, 3... ---
+        // Ignores any rows hidden by the filter so numbering stays perfect
         function updateRowNumbers() {
             var table = document.getElementById("engineTable");
             var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
@@ -190,6 +232,8 @@
             }
         }
 
+        // --- 3. Sorting by Main Rating ---
+        // Reads the calculated Gold rating in column 1 and sorts Highest to Lowest
         function forceSortByRating() {
             var table = document.getElementById("engineTable");
             var tbody = table.getElementsByTagName("tbody")[0];
@@ -198,22 +242,27 @@
             rowsArray.sort(function(a, b) {
                 var ratingA = parseInt(a.getElementsByTagName("td")[1].innerText) || 0;
                 var ratingB = parseInt(b.getElementsByTagName("td")[1].innerText) || 0;
-                return ratingB - ratingA; 
+                return ratingB - ratingA; // B minus A sorts descending (highest first)
             });
 
+            // Re-append rows in the new sorted order
             for (var i = 0; i < rowsArray.length; i++) {
                 tbody.appendChild(rowsArray[i]);
             }
             updateRowNumbers();
         }
 
+        // --- 4. Filtering Logic ---
+        // Looks at the checkboxes and hides any row that doesn't match
         function filterTable() {
             var table = document.getElementById("engineTable");
             var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-            var filterColumns = [3, 4, 5, 6, 7, 8];
+            var filterColumns = [3, 4, 5, 6, 7, 8]; // The specific column numbers with dropdowns
 
             for (var i = 0; i < rows.length; i++) {
                 var showRow = true;
+                
+                // Loop through every column that has a filter
                 for (var k = 0; k < filterColumns.length; k++) {
                     var colIndex = filterColumns[k];
                     var cellText = rows[i].getElementsByTagName("td")[colIndex].innerText.trim();
@@ -221,6 +270,7 @@
                     var checkboxes = headerCell.querySelectorAll("input[type='checkbox']");
                     
                     var passedThisFilter = false;
+                    // Check if the row's text matches ANY of the currently checked boxes
                     for (var c = 0; c < checkboxes.length; c++) {
                         if (checkboxes[c].checked && checkboxes[c].value === cellText) {
                             passedThisFilter = true;
@@ -229,12 +279,17 @@
                     }
                     if (!passedThisFilter) { showRow = false; break; }
                 }
+                
+                // Show or hide the row
                 rows[i].style.display = showRow ? "" : "none";
             }
             updateRowNumbers();
         }
 
+        // --- 5. Math Engine (Weighted Ratings) ---
+        // Multiplies the base ratings by their inflation scale, then applies user weights
         function calculateRatings() {
+            // Get the user's chosen weights from the input boxes at the top
             var wCcrl40 = parseFloat(document.getElementById("w-ccrl4040").value) || 0;
             var wCcrlBl = parseFloat(document.getElementById("w-ccrlblitz").value) || 0;
             var wSpcc   = parseFloat(document.getElementById("w-spcc").value) || 0;
@@ -247,27 +302,33 @@
                 var totalScore = 0;
                 var totalWeight = 0;
 
+                // Read the invisible raw data stored in the row during CSV upload
                 var valCcrl40 = parseFloat(row.dataset.ccrl4040);
                 var valCcrlBl = parseFloat(row.dataset.ccrlblitz);
                 var valSpcc   = parseFloat(row.dataset.spcc);
                 var valIpman  = parseFloat(row.dataset.ipman);
                 var valCegt   = parseFloat(row.dataset.cegt);
 
-                // Multiply the specific lists by 1.07 BEFORE adding to the total score
+                // APPLY MATH: Scale specific lists (1.07 or 1.02), then multiply by user weight
                 if (!isNaN(valCcrl40)) { totalScore += (valCcrl40 * 1.07) * wCcrl40; totalWeight += wCcrl40; }
-                if (!isNaN(valCcrlBl)) { totalScore += valCcrlBl * wCcrlBl;          totalWeight += wCcrlBl; }
+                if (!isNaN(valCcrlBl)) { totalScore += (valCcrlBl * 1.02) * wCcrlBl; totalWeight += wCcrlBl; }
                 if (!isNaN(valSpcc))   { totalScore += valSpcc * wSpcc;              totalWeight += wSpcc; }
                 if (!isNaN(valIpman))  { totalScore += (valIpman * 1.07) * wIpman;   totalWeight += wIpman; }
                 if (!isNaN(valCegt))   { totalScore += (valCegt * 1.07) * wCegt;     totalWeight += wCegt; }
 
+                // Calculate final average. If no data exists, display "N/A"
                 var finalRating = (totalWeight > 0) ? Math.round(totalScore / totalWeight) : "N/A";
                 
+                // Write the final rating into the Main Rating column (column index 1)
                 row.getElementsByTagName("td")[1].innerText = finalRating;
             });
 
+            // Resort the table just in case the math changed the rankings
             forceSortByRating();
         }
 
+        // --- 6. Auto-Generate Filter Dropdowns ---
+        // Scans the column and builds a checkbox for every unique word it finds
         function populateFilters(colIndex, containerId) {
             var table = document.getElementById("engineTable");
             var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
@@ -287,9 +348,11 @@
             });
         }
 
+        // --- 7. Load Data from CSV ---
+        // Fetches your Excel data, builds the table, and kicks off all the math/filters
         async function loadCSVData() {
             try {
-                // To force the browser to not load a cached old version of your CSV, we add a timestamp query string
+                // The ?t= prevents the browser from caching an old version of the Excel file
                 const response = await fetch('data.csv?t=' + new Date().getTime());
                 if (!response.ok) throw new Error("Network response was not ok");
                 
@@ -299,26 +362,31 @@
                 
                 for (let i = 1; i < lines.length; i++) {
                     const columns = lines[i].split(',');
+                    // Make sure the row actually has all 13 columns of data before proceeding
                     if (columns.length < 13) continue; 
 
                     const tr = document.createElement('tr');
                     
+                    // Store original ratings invisibly inside the row HTML so math is always accurate
                     tr.dataset.ccrl4040 = columns[8].trim();
                     tr.dataset.ccrlblitz = columns[9].trim();
                     tr.dataset.spcc = columns[10].trim();
                     tr.dataset.ipman = columns[11].trim();
                     tr.dataset.cegt = columns[12].trim();
 
+                    // Map the Excel columns to Table Cells and apply specific color classes
                     let tds = [
-                        { text: "", class: "" }, 
-                        { text: "", class: "col-main-rating" }, 
-                        { text: columns[1].trim(), class: "col-name" }, 
-                        { text: columns[2].trim(), class: "col-meta" }, 
-                        { text: columns[3].trim(), class: "col-meta" }, 
-                        { text: columns[4].trim(), class: "col-meta" }, 
-                        { text: columns[5].trim(), class: "col-meta" }, 
-                        { text: columns[6].trim(), class: "col-meta" }, 
-                        { text: columns[7].trim(), class: "col-meta" }, 
+                        { text: "", class: "" }, // Col 0: Index Number
+                        { text: "", class: "col-main-rating" }, // Col 1: Calculated Main Rating
+                        { text: columns[1].trim(), class: "col-name" }, // Col 2: Engine Name
+                        { text: columns[2].trim(), class: "col-meta" }, // Col 3: Family
+                        { text: columns[3].trim(), class: "col-meta" }, // Col 4: Access
+                        { text: columns[4].trim(), class: "col-meta" }, // Col 5: Source
+                        { text: columns[5].trim(), class: "col-meta" }, // Col 6: Language
+                        { text: columns[6].trim(), class: "col-meta" }, // Col 7: Eval Type
+                        { text: columns[7].trim(), class: "col-meta" }, // Col 8: Year
+                        
+                        // Replace Excel's #N/A with a clean "-" for the UI
                         { text: columns[8].trim() === "#N/A" ? "-" : columns[8].trim(), class: "col-list-rating" }, 
                         { text: columns[9].trim() === "#N/A" ? "-" : columns[9].trim(), class: "col-list-rating" }, 
                         { text: columns[10].trim() === "#N/A" ? "-" : columns[10].trim(), class: "col-list-rating" }, 
@@ -326,6 +394,7 @@
                         { text: columns[12].trim() === "#N/A" ? "-" : columns[12].trim(), class: "col-list-rating" }  
                     ];
 
+                    // Attach the cells to the row
                     tds.forEach(cell => {
                         const td = document.createElement('td');
                         td.innerText = cell.text;
@@ -336,6 +405,7 @@
                     tbody.appendChild(tr);
                 }
                 
+                // Once data is completely loaded, build the dropdown filters dynamically
                 populateFilters(3, "filter-family");
                 populateFilters(4, "filter-access");
                 populateFilters(5, "filter-source");
@@ -343,15 +413,18 @@
                 populateFilters(7, "filter-eval");
                 populateFilters(8, "filter-year");
 
+                // Finally, calculate the ratings, sort the table, and apply any filters
                 calculateRatings();
                 filterTable();
                 
             } catch (error) {
+                // Error handling if testing locally without a server
                 console.log("Waiting for server hosting!");
                 document.querySelector("#engineTable tbody").innerHTML = "<tr><td colspan='14'><i>Data will appear here once the site is hosted on a server!</i></td></tr>";
             }
         }
 
+        // Execute load script as soon as the page opens
         window.onload = function() { loadCSVData(); };
     </script>
 </body>
