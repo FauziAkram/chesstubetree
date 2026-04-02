@@ -1,4 +1,67 @@
-﻿Rating,Engine Name,Family,Access,Source,Language,Eval Type,Release Year
-3600,Stockfish 16.1,Stockfish,Public,Open,C++,NNUE,2024
-3500,Lc0 (Leela),Lc0,Public,Open,C++,NNUE,2024
-3300,Old Engine v1,Other,Private,Closed,C,HCE,2010
+﻿Rating,Engine Name,Family,Access,Source,Language,Eval Type,Release Year,ccrl4040,ccrlblitz,sp-cc,ipman,cegt
+,Stockfish 18,Stockfish,Open,Open,C++,NNUE,2026,3623,3774,3910,3622 ,3614
+,Stockfish 17.1,Stockfish,Open,Open,C++,NNUE,2026,3622,3778,3884,3608 ,3610
+,Stockfish 17,Stockfish,Open,Open,C++,NNUE,2026,3619,3783,3843,#N/A,3615
+,Stockfish 16.1,Stockfish,Open,Open,C++,NNUE,2026,3620,3770,3804,#N/A,3612
+,Stockfish 16,Stockfish,Open,Open,C++,NNUE,2026,3619,3768,3777,#N/A,3583
+,Reckless 0.9.0,Reckless,Open,Open,Rust,NNUE,2026,3619,3766,3872,3602 ,3611
+,Stockfish 15.1,Stockfish,Open,Open,C++,NNUE,2026,3612,3761,3764,#N/A,3573
+,Torch 2,Torch,Closed,Closed,C++,NNUE,2026,3607,3761,3781,#N/A,3594
+,Reckless 0.8.0,Reckless,Open,Open,Rust,NNUE,2026,3606,3760,3813,3576 ,3597
+,Torch 4,Torch,Closed,Closed,C++,NNUE,2026,3610,3760,3843,3597 ,3609
+,Torch 1,Torch,Closed,Closed,C++,NNUE,2026,3608,3755,3747,#N/A,#N/A
+,Torch 3,Torch,Closed,Closed,C++,NNUE,2026,3610,3754,3800,#N/A,3608
+,PlentyChess 7.0,Plenty,Open,Open,C++,NNUE,2026,3607,3752,3812,3577 ,3601
+,Obsidian 16.0,Obsidian,Open,Open,C++,NNUE,2026,3603,3751,3810,3575 ,3595
+,Alexandria 9.0,Rating,Open,Open,C++,NNUE,2026,3603,3748,3794,3566 ,3588
+,Stockfish 15,Stockfish,Open,Open,C++,NNUE,2026,3599,3746,#N/A,#N/A,3578
+,Obsidian 15.0,Obsidian,Open,Open,C++,NNUE,2026,3594,3743,3774,#N/A,3579
+,Viridithas 19.0,Viridithas,Open,Open,C++,NNUE,2026,3597,3742,3760,3538 ,3587
+,Alexandria 8.1.12,Rating,Open,Open,C++,NNUE,2026,3599,3740,3769,#N/A,#N/A
+,PlentyChess 6.0,Plenty,Open,Open,C++,NNUE,2026,3598,3739,3776,#N/A,3582
+,Obsidian 14.0,Obsidian,Open,Open,C++,NNUE,2026,3593,3738,3753,#N/A,3579
+,PlentyChess 5.0,Plenty,Open,Open,C++,NNUE,2026,3592,3738,3753,#N/A,3580
+,Alexandria 8.1,Rating,Open,Open,C++,NNUE,2026,#N/A,3737,3761,3555 ,3589
+,Clover 9.1,Clover,Open,Open,C++,NNUE,2026,3585,3735,3725,#N/A,3571
+,Dragon by Komodo 3.3,Komodo,Closed,Closed,C++,NNUE,2026,3599,3735,3722,3532 ,3577
+,Stockfish 14.1,Stockfish,Open,Open,C++,NNUE,2026,3577,3732,#N/A,#N/A,3567
+,Berserk 13,Berserk,Open,Open,C++,NNUE,2026,3586,3731,3732,3534 ,3568
+,Alexandria 8.0,Rating,Open,Open,C++,NNUE,2026,3588,3730,3745,#N/A,3579
+,Caissa 1.23,Caissa,Open,Open,C++,NNUE,2026,3584,3730,3724,3531 ,3577
+,Quanticade 3.0,Quanticade,Open,Open,C++,NNUE,2026,3584,3729,3712,3524 ,3571
+,Tarnished 5.0-Hero,Tarnished,Open,Open,C++,NNUE,2026,3584,3729,#N/A,3525 ,3567
+,Caissa 1.24,Caissa,Open,Open,C++,NNUE,2026,3591,3727,3730,3532 ,3575
+,PlentyChess 4.0,Plenty,Open,Open,C++,NNUE,2026,3591,3729,3729,#N/A,3571
+,Viridithas 18.0,Viridithas,Open,Open,C++,NNUE,2026,3587,3726,3722,3526 ,3561
+,Dragon by Komodo 3.2,Komodo,Closed,Closed,C++,NNUE,2026,3592,3725,3705,3526 ,3548
+,Obsidian 13.0,Obsidian,Open,Open,C++,NNUE,2026,3583,3725,3704,#N/A,3564
+,pawnocchio 1.9.2,Rating,Open,Open,C++,NNUE,2026,#N/A,3725,#N/A,#N/A,#N/A
+,Integral 7.0,Integral,Open,Open,C++,NNUE,2026,3582,3723,3712,3527 ,3560
+,Caissa 1.22,Caissa,Open,Open,C++,NNUE,2026,3582,3722,3715,#N/A,3564
+,Stormphrax 7.0,Stormphrax,Open,Open,C++,NNUE,2026,3581,3722,3704,3508 ,3568
+,Alexandria 7.1,Rating,Open,Open,C++,NNUE,2026,3585,3720,3703,#N/A,3561
+,Berserk 12,Berserk,Open,Open,C++,NNUE,2026,3584,3720,3697,#N/A,#N/A
+,Clover 9.0,Clover,Open,Open,C++,NNUE,2026,3581,3719,3718,3532 ,3571
+,Dragon by Komodo 3,Komodo,Closed,Closed,C++,NNUE,2026,3580,3718,#N/A,#N/A,3573
+,Dragon by Komodo 3.1,Komodo,Closed,Closed,C++,NNUE,2026,3587,3717,#N/A,#N/A,3536
+,Horsie 1.1,Horsie,Open,Open,C++,NNUE,2026,3581,3717,3686,3515 ,3563
+,Caissa 1.21,Caissa,Open,Open,C++,NNUE,2026,3581,3715,3707,#N/A,3565
+,Hobbes 1.0,Rating,Open,Open,C++,NNUE,2026,3570,3709,#N/A,#N/A,#N/A
+,Obsidian 12.0,Obsidian,Open,Open,C++,NNUE,2026,3573,3709,3678,#N/A,3558
+,Viridithas 17.0,Viridithas,Open,Open,C++,NNUE,2026,3578,3709,3690,#N/A,#N/A
+,Integral 6.0,Integral,Open,Open,C++,NNUE,2026,3566,3707,3664,#N/A,3546
+,Motor 0.9,Rating,Open,Open,C++,NNUE,2026,3571,3707,3665,#N/A,3551
+,PlentyChess 3.0,Plenty,Open,Open,C++,NNUE,2026,3576,3707,3691,#N/A,3554
+,Dragon by Komodo 2.6,Komodo,Closed,Closed,C++,NNUE,2026,3569,3704,#N/A,#N/A,3538
+,Lizard 11.2,Rating,Open,Open,C++,NNUE,2026,3569,3704,#N/A,#N/A,3549
+,Lc0 0.29.0,Rating,Open,Open,C++,NNUE,2026,#N/A,3703,#N/A,#N/A,#N/A
+,Alexandria 7.0,Rating,Open,Open,C++,NNUE,2026,3569,3701,3651,#N/A,3551
+,Caissa 1.20,Caissa,Open,Open,C++,NNUE,2026,3574,3701,3682,#N/A,3546
+,Stoofvlees II,Stoofvlees,Open,Open,C++,NNUE,2026,#N/A,3701,#N/A,#N/A,#N/A
+,Clover 8.2.1,Clover,Open,Open,C++,NNUE,2026,#N/A,3700,#N/A,#N/A,#N/A
+,RubiChess 20240817,Rating,Open,Open,C++,NNUE,2026,3569,3700,3660,3488 ,#N/A
+,Stockfish 14,Stockfish,Open,Open,C++,NNUE,2026,3572,3699,3696,#N/A,3562
+,Torch 4d,Torch,Closed,Closed,C++,NNUE,2026,3619,#N/A,3866,3600 ,3610
+,Halogen 16,Halogen,Open,Open,C++,NNUE,2026,3591,3728,3721,3527 ,3568
+,pawnocchio 1.9.1,Rating,Open,Open,C++,NNUE,2026,3588,#N/A,#N/A,#N/A,#N/A
+,Pawnocchio 1.9,Pawnocchio,Open,Open,C++,NNUE,2026,#N/A,#N/A,3713,3529 ,3569
