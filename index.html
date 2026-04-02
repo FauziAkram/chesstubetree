@@ -33,9 +33,9 @@
         }
 
         /* --- Column Color Coding (Dark Mode) --- */
-        .col-main-rating { color: #ffd700; font-weight: bold; font-size: 16px; } /* Gold */
-        .col-list-rating { color: #87cefa; } /* Light Blue */
-        .col-meta { color: #aaaaaa; } /* Light Grey */
+        .col-main-rating { color: #ffd700; font-weight: bold; font-size: 16px; } 
+        .col-list-rating { color: #87cefa; } 
+        .col-meta { color: #aaaaaa; } 
         .col-name { color: #ffffff; font-weight: bold; }
 
         /* ====== OPTION 2: CLASSIC WOODEN ====== */
@@ -51,8 +51,8 @@
         body.wood tr:hover { background-color: #d1bfae; }
         
         /* --- Column Color Coding (Wooden Mode) --- */
-        body.wood .col-main-rating { color: #800000; font-weight: bold; font-size: 16px; } /* Dark Maroon */
-        body.wood .col-list-rating { color: #005f00; font-weight: bold; } /* Dark Green */
+        body.wood .col-main-rating { color: #800000; font-weight: bold; font-size: 16px; } 
+        body.wood .col-list-rating { color: #005f00; font-weight: bold; } 
         body.wood .col-meta { color: #555555; }
         body.wood .col-name { color: #000000; font-weight: bold; }
 
@@ -78,11 +78,13 @@
         /* --- Weights Control Panel --- */
         .weights-panel {
             background-color: rgba(0,0,0,0.1); padding: 15px; border-radius: 5px; margin-bottom: 20px;
-            display: flex; gap: 15px; align-items: center; flex-wrap: wrap; border: 1px solid #555;
+            border: 1px solid #555;
         }
         body.wood .weights-panel { border: 2px dashed #4b382a; }
+        .weights-controls { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
         .weight-box { display: flex; flex-direction: column; align-items: center; font-size: 13px; }
         .weight-box input { width: 50px; text-align: center; padding: 4px; margin-top: 4px; }
+        .math-note { font-size: 12px; margin-top: 15px; font-style: italic; opacity: 0.8; }
     </style>
 </head>
 <body>
@@ -100,28 +102,36 @@
 
     <!-- WEIGHTS CONTROL PANEL -->
     <div class="weights-panel">
-        <strong>Adjust List Weights:</strong>
-        <span style="font-size: 12px; opacity: 0.8;">(Set to 0 to ignore a list. Math auto-balances!)</span>
+        <div>
+            <strong>Adjust List Weights:</strong>
+            <span style="font-size: 12px; opacity: 0.8; margin-left: 10px;">(Set to 0 to ignore a list. Math auto-balances!)</span>
+        </div>
         
-        <div class="weight-box">
-            <label>CCRL 40/40</label>
-            <input type="number" id="w-ccrl4040" value="1" min="0" step="0.5" onchange="calculateRatings()">
+        <div class="weights-controls">
+            <div class="weight-box">
+                <label>CCRL 40/40</label>
+                <input type="number" id="w-ccrl4040" value="1" min="0" step="0.5" onchange="calculateRatings()">
+            </div>
+            <div class="weight-box">
+                <label>CCRL Blitz</label>
+                <input type="number" id="w-ccrlblitz" value="1" min="0" step="0.5" onchange="calculateRatings()">
+            </div>
+            <div class="weight-box">
+                <label>SP-CC</label>
+                <input type="number" id="w-spcc" value="1" min="0" step="0.5" onchange="calculateRatings()">
+            </div>
+            <div class="weight-box">
+                <label>Ipman</label>
+                <input type="number" id="w-ipman" value="1" min="0" step="0.5" onchange="calculateRatings()">
+            </div>
+            <div class="weight-box">
+                <label>CEGT</label>
+                <input type="number" id="w-cegt" value="1" min="0" step="0.5" onchange="calculateRatings()">
+            </div>
         </div>
-        <div class="weight-box">
-            <label>CCRL Blitz</label>
-            <input type="number" id="w-ccrlblitz" value="1" min="0" step="0.5" onchange="calculateRatings()">
-        </div>
-        <div class="weight-box">
-            <label>SP-CC</label>
-            <input type="number" id="w-spcc" value="1" min="0" step="0.5" onchange="calculateRatings()">
-        </div>
-        <div class="weight-box">
-            <label>Ipman</label>
-            <input type="number" id="w-ipman" value="1" min="0" step="0.5" onchange="calculateRatings()">
-        </div>
-        <div class="weight-box">
-            <label>CEGT</label>
-            <input type="number" id="w-cegt" value="1" min="0" step="0.5" onchange="calculateRatings()">
+        
+        <div class="math-note">
+            Note: Due to scalability differences between rating pools, the base ratings from <strong>CCRL 40/40, Ipman, and CEGT</strong> are multiplied by <strong>1.07</strong> prior to applying these weights to accurately calculate the Main Rating.
         </div>
     </div>
 
@@ -150,7 +160,6 @@
                     <details class="filter-dropdown"><summary>Filter</summary><div class="checkbox-list" id="filter-year"></div></details>
                 </th>
                 
-                <!-- New Rating List Columns -->
                 <th>CCRL 40/40</th>
                 <th>CCRL Blitz</th>
                 <th>SP-CC</th>
@@ -187,7 +196,6 @@
             var rowsArray = Array.prototype.slice.call(tbody.getElementsByTagName("tr"));
 
             rowsArray.sort(function(a, b) {
-                // Main rating is now column index 1
                 var ratingA = parseInt(a.getElementsByTagName("td")[1].innerText) || 0;
                 var ratingB = parseInt(b.getElementsByTagName("td")[1].innerText) || 0;
                 return ratingB - ratingA; 
@@ -226,9 +234,7 @@
             updateRowNumbers();
         }
 
-        // --- NEW: Calculate the weighted average ratings dynamically ---
         function calculateRatings() {
-            // Get weights from inputs
             var wCcrl40 = parseFloat(document.getElementById("w-ccrl4040").value) || 0;
             var wCcrlBl = parseFloat(document.getElementById("w-ccrlblitz").value) || 0;
             var wSpcc   = parseFloat(document.getElementById("w-spcc").value) || 0;
@@ -241,31 +247,27 @@
                 var totalScore = 0;
                 var totalWeight = 0;
 
-                // Read hidden dataset values stored during CSV load
                 var valCcrl40 = parseFloat(row.dataset.ccrl4040);
                 var valCcrlBl = parseFloat(row.dataset.ccrlblitz);
                 var valSpcc   = parseFloat(row.dataset.spcc);
                 var valIpman  = parseFloat(row.dataset.ipman);
                 var valCegt   = parseFloat(row.dataset.cegt);
 
-                // If the engine has a rating on a list, add it to the math
-                if (!isNaN(valCcrl40)) { totalScore += valCcrl40 * wCcrl40; totalWeight += wCcrl40; }
-                if (!isNaN(valCcrlBl)) { totalScore += valCcrlBl * wCcrlBl; totalWeight += wCcrlBl; }
-                if (!isNaN(valSpcc))   { totalScore += valSpcc * wSpcc;     totalWeight += wSpcc; }
-                if (!isNaN(valIpman))  { totalScore += valIpman * wIpman;   totalWeight += wIpman; }
-                if (!isNaN(valCegt))   { totalScore += valCegt * wCegt;     totalWeight += wCegt; }
+                // Multiply the specific lists by 1.07 BEFORE adding to the total score
+                if (!isNaN(valCcrl40)) { totalScore += (valCcrl40 * 1.07) * wCcrl40; totalWeight += wCcrl40; }
+                if (!isNaN(valCcrlBl)) { totalScore += valCcrlBl * wCcrlBl;          totalWeight += wCcrlBl; }
+                if (!isNaN(valSpcc))   { totalScore += valSpcc * wSpcc;              totalWeight += wSpcc; }
+                if (!isNaN(valIpman))  { totalScore += (valIpman * 1.07) * wIpman;   totalWeight += wIpman; }
+                if (!isNaN(valCegt))   { totalScore += (valCegt * 1.07) * wCegt;     totalWeight += wCegt; }
 
                 var finalRating = (totalWeight > 0) ? Math.round(totalScore / totalWeight) : "N/A";
                 
-                // Update the Main Rating Cell
                 row.getElementsByTagName("td")[1].innerText = finalRating;
             });
 
-            // Re-sort because ratings might have changed!
             forceSortByRating();
         }
 
-        // --- UPDATED: Automatically generate filter checkboxes from CSV data ---
         function populateFilters(colIndex, containerId) {
             var table = document.getElementById("engineTable");
             var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
@@ -276,7 +278,7 @@
             }
 
             var container = document.getElementById(containerId);
-            container.innerHTML = ""; // Clear existing
+            container.innerHTML = ""; 
             
             uniqueValues.forEach(val => {
                 var label = document.createElement("label");
@@ -285,10 +287,10 @@
             });
         }
 
-        // --- UPDATED: Load CSV Data ---
         async function loadCSVData() {
             try {
-                const response = await fetch('data.csv');
+                // To force the browser to not load a cached old version of your CSV, we add a timestamp query string
+                const response = await fetch('data.csv?t=' + new Date().getTime());
                 if (!response.ok) throw new Error("Network response was not ok");
                 
                 const csvText = await response.text();
@@ -297,33 +299,31 @@
                 
                 for (let i = 1; i < lines.length; i++) {
                     const columns = lines[i].split(',');
-                    if (columns.length < 13) continue; // Ensure we have all 13 columns
+                    if (columns.length < 13) continue; 
 
                     const tr = document.createElement('tr');
                     
-                    // Store the rating data invisibly in the row so we can calculate it later
                     tr.dataset.ccrl4040 = columns[8].trim();
                     tr.dataset.ccrlblitz = columns[9].trim();
                     tr.dataset.spcc = columns[10].trim();
                     tr.dataset.ipman = columns[11].trim();
                     tr.dataset.cegt = columns[12].trim();
 
-                    // Create Table Cells dynamically and apply color classes
                     let tds = [
-                        { text: "", class: "" }, // 0: #
-                        { text: "", class: "col-main-rating" }, // 1: Main Rating (calculated later)
-                        { text: columns[1].trim(), class: "col-name" }, // 2: Name
-                        { text: columns[2].trim(), class: "col-meta" }, // 3: Family
-                        { text: columns[3].trim(), class: "col-meta" }, // 4: Access
-                        { text: columns[4].trim(), class: "col-meta" }, // 5: Source
-                        { text: columns[5].trim(), class: "col-meta" }, // 6: Language
-                        { text: columns[6].trim(), class: "col-meta" }, // 7: Eval Type
-                        { text: columns[7].trim(), class: "col-meta" }, // 8: Year
-                        { text: columns[8].trim() === "#N/A" ? "-" : columns[8].trim(), class: "col-list-rating" }, // 9: ccrl4040
-                        { text: columns[9].trim() === "#N/A" ? "-" : columns[9].trim(), class: "col-list-rating" }, // 10: ccrlblitz
-                        { text: columns[10].trim() === "#N/A" ? "-" : columns[10].trim(), class: "col-list-rating" }, // 11: sp-cc
-                        { text: columns[11].trim() === "#N/A" ? "-" : columns[11].trim(), class: "col-list-rating" }, // 12: ipman
-                        { text: columns[12].trim() === "#N/A" ? "-" : columns[12].trim(), class: "col-list-rating" }  // 13: cegt
+                        { text: "", class: "" }, 
+                        { text: "", class: "col-main-rating" }, 
+                        { text: columns[1].trim(), class: "col-name" }, 
+                        { text: columns[2].trim(), class: "col-meta" }, 
+                        { text: columns[3].trim(), class: "col-meta" }, 
+                        { text: columns[4].trim(), class: "col-meta" }, 
+                        { text: columns[5].trim(), class: "col-meta" }, 
+                        { text: columns[6].trim(), class: "col-meta" }, 
+                        { text: columns[7].trim(), class: "col-meta" }, 
+                        { text: columns[8].trim() === "#N/A" ? "-" : columns[8].trim(), class: "col-list-rating" }, 
+                        { text: columns[9].trim() === "#N/A" ? "-" : columns[9].trim(), class: "col-list-rating" }, 
+                        { text: columns[10].trim() === "#N/A" ? "-" : columns[10].trim(), class: "col-list-rating" }, 
+                        { text: columns[11].trim() === "#N/A" ? "-" : columns[11].trim(), class: "col-list-rating" }, 
+                        { text: columns[12].trim() === "#N/A" ? "-" : columns[12].trim(), class: "col-list-rating" }  
                     ];
 
                     tds.forEach(cell => {
@@ -336,7 +336,6 @@
                     tbody.appendChild(tr);
                 }
                 
-                // Auto-generate filter dropdowns based on the Excel data!
                 populateFilters(3, "filter-family");
                 populateFilters(4, "filter-access");
                 populateFilters(5, "filter-source");
@@ -344,7 +343,6 @@
                 populateFilters(7, "filter-eval");
                 populateFilters(8, "filter-year");
 
-                // Calculate ratings and sort
                 calculateRatings();
                 filterTable();
                 
