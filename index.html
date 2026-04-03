@@ -195,7 +195,7 @@
         </div>
         
         <div class="math-note">
-            Note: Ratings are shown as <strong>Original (Scaled)</strong>. Due to scalability differences, the base ratings from CCRL 40/40, Ipman, and CEGT are multiplied by <strong>1.07</strong>, and CCRL Blitz by <strong>1.02</strong> prior to applying these weights.
+            Note: Ratings are shown as <strong>Original (Scaled)</strong>. Due to scalability differences, the base ratings from <strong>CCRL 40/40 and CEGT</strong> are multiplied by <strong>1.05</strong>, and <strong>Ipman</strong> by <strong>1.06</strong> prior to applying these weights.
         </div>
     </div>
 
@@ -368,11 +368,12 @@
                 var valIpman  = parseFloat(row.dataset.ipman);
                 var valCegt   = parseFloat(row.dataset.cegt);
 
-                if (!isNaN(valCcrl40)) { totalScore += (valCcrl40 * 1.07) * wCcrl40; totalWeight += wCcrl40; }
-                if (!isNaN(valCcrlBl)) { totalScore += (valCcrlBl * 1.02) * wCcrlBl; totalWeight += wCcrlBl; }
+                // Apply updated scales, then multiply by user weight
+                if (!isNaN(valCcrl40)) { totalScore += (valCcrl40 * 1.05) * wCcrl40; totalWeight += wCcrl40; }
+                if (!isNaN(valCcrlBl)) { totalScore += (valCcrlBl * 1.00) * wCcrlBl; totalWeight += wCcrlBl; }
                 if (!isNaN(valSpcc))   { totalScore += valSpcc * wSpcc;              totalWeight += wSpcc; }
-                if (!isNaN(valIpman))  { totalScore += (valIpman * 1.07) * wIpman;   totalWeight += wIpman; }
-                if (!isNaN(valCegt))   { totalScore += (valCegt * 1.07) * wCegt;     totalWeight += wCegt; }
+                if (!isNaN(valIpman))  { totalScore += (valIpman * 1.06) * wIpman;   totalWeight += wIpman; }
+                if (!isNaN(valCegt))   { totalScore += (valCegt * 1.05) * wCegt;     totalWeight += wCegt; }
 
                 var finalRating = (totalWeight > 0) ? Math.round(totalScore / totalWeight) : "N/A";
                 row.getElementsByTagName("td")[1].innerText = finalRating;
@@ -453,11 +454,11 @@
                         { text: columns[6].trim(), class: "col-meta" }, 
                         { text: columns[7].trim(), class: "col-meta" }, 
                         
-                        { text: formatRatingCell(columns[8], 1.07), class: "col-list-rating" }, 
-                        { text: formatRatingCell(columns[9], 1.02), class: "col-list-rating" }, 
+                        { text: formatRatingCell(columns[8], 1.05), class: "col-list-rating" }, 
+                        { text: formatRatingCell(columns[9], 1), class: "col-list-rating" }, 
                         { text: formatRatingCell(columns[10], 1), class: "col-list-rating" }, 
-                        { text: formatRatingCell(columns[11], 1.07), class: "col-list-rating" }, 
-                        { text: formatRatingCell(columns[12], 1.07), class: "col-list-rating" }  
+                        { text: formatRatingCell(columns[11], 1.06), class: "col-list-rating" }, 
+                        { text: formatRatingCell(columns[12], 1.05), class: "col-list-rating" }
                     ];
 
                     tds.forEach(cell => {
