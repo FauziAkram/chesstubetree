@@ -63,5 +63,9 @@
 ,Stockfish 14,Stockfish,Open,Open,C++,NNUE,2021,3572,3699,3696,#N/A,3562
 ,Torch 4d,Torch,Closed,Closed,C++,NNUE,2026,3619,#N/A,3866,3600 ,3610
 ,Halogen 16,Halogen,Open,Open,C++,NNUE,2026,3591,3728,3721,3527 ,3568
-,pawnocchio 1.9.1,Pawnocchio,Open,Open,C++,NNUE,2026,3588,#N/A,#N/A,#N/A,#N/A
 ,Pawnocchio 1.9,Pawnocchio,Open,Open,C++,NNUE,2026,#N/A,#N/A,3713,3529 ,3569
+,PlentyChess 4.0,Plenty,Open,Open,C++,NNUE,2025,3591,3729,3729,#N/A,3571
+,Uralochka 3.42a,Uralochka,Open,Open,C++,NNUE,2025,3574,3695,3670,3500 ,3556
+,Ginkgo 5.40,Ginkgo,Closed,Closed,C++,NNUE,2025,3572,#N/A,#N/A,#N/A,3551
+,Ethereal 14.25,Ethereal,Open,Open,C++,NNUE,2023,3565,3692,#N/A,3484 ,3532
+,Sirius 9.0,Sirius,Open,Open,C++,HCE,2025,3446,3533,#N/A,#N/A,3372
