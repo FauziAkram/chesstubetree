@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>ChessTubeTree</title>
     
@@ -20,7 +20,7 @@
             border-collapse: collapse;
             width: 100%;
             background-color: #2d2d2d;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         th, td {
             padding: 10px 12px;
@@ -37,7 +37,6 @@
         
         /* Column Color Coding (Dark) */
         .col-main-rating { color: #ffd700; font-weight: bold; font-size: 16px; } 
-        /* Added white-space: nowrap so the dual ratings like "3600 (3852)" don't break into two lines */
         .col-list-rating { color: #87cefa; white-space: nowrap; } 
         .col-meta { color: #aaaaaa; } 
         .col-name { color: #ffffff; font-weight: bold; }
@@ -96,7 +95,7 @@
         }
         .checkbox-list label { display: block; margin-bottom: 6px; font-size: 13px; color: white; cursor: pointer; white-space: nowrap; }
         
-v       body.wood details.filter-dropdown summary { background-color: #e6d8c3; color: #231f20; border: 1px solid #4b382a; }
+        body.wood details.filter-dropdown summary { background-color: #e6d8c3; color: #231f20; border: 1px solid #4b382a; }
         body.wood details.filter-dropdown summary:hover { background-color: #d1bfae; }
         body.wood .checkbox-list { background-color: #fdfdfd; border: 2px solid #4b382a; }
         body.wood .checkbox-list label { color: #231f20; }
@@ -107,7 +106,7 @@ v       body.wood details.filter-dropdown summary { background-color: #e6d8c3; c
         body.terminal .checkbox-list label { color: #00ff00; }
 
         /* ----------------------------------------
-           WEIGHTS CONTROL PANEL
+           WEIGHTS CONTROL PANEL & BUTTONS
            ---------------------------------------- */
         .weights-panel { background-color: rgba(0,0,0,0.1); padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #555; }
         body.wood .weights-panel { border: 2px dashed #4b382a; }
@@ -117,8 +116,30 @@ v       body.wood details.filter-dropdown summary { background-color: #e6d8c3; c
         .weight-box { display: flex; flex-direction: column; align-items: center; font-size: 13px; }
         .weight-box input { width: 50px; text-align: center; padding: 4px; margin-top: 4px; }
 
-        body.terminal .weight-box input { background-color: #000; border: 1px solid #00ff00; color: #00ff00; 
+        body.terminal .weight-box input { background-color: #000; border: 1px solid #00ff00; color: #00ff00; }
         .math-note { font-size: 12px; margin-top: 15px; font-style: italic; opacity: 0.8; }
+
+        /* Style for the View Toggle Buttons */
+        .view-btn {
+            padding: 8px 16px;
+            margin-right: 10px;
+            cursor: pointer;
+            border: 1px solid #777;
+            background-color: #444;
+            color: white;
+            border-radius: 4px;
+        }
+        .view-btn.active {
+            background-color: #3a7bd5;
+            border-color: #fff;
+            font-weight: bold;
+        }
+        body.wood .view-btn { background-color: #e6d8c3; color: #231f20; border-color: #4b382a; }
+        body.wood .view-btn.active { background-color: #4b382a; color: #f3e6d8; }
+        body.terminal .view-btn { background-color: #000; color: #00ff00; border-color: #00ff00; }
+        body.terminal .view-btn.active { background-color: #00ff00; color: #000; }
+
+        .about-section { margin-top: 50px; padding: 20px; border-top: 1px solid #444; line-height: 1.6; font-size: 14px; }
     </style>
 </head>
 <body>
@@ -129,14 +150,20 @@ v       body.wood details.filter-dropdown summary { background-color: #e6d8c3; c
     <h1>ChessTubeTree</h1>
     <p><strong>Last Update:</strong> 3 April 2026</p>
 
-    <p>
+    <div style="margin-bottom: 20px;">
         <label for="themeSelector"><strong>Choose Theme: </strong></label>
         <select id="themeSelector" onchange="changeTheme()">
             <option value="dark">Dark Mode</option>
             <option value="wood">Classic Wooden</option>
             <option value="terminal">Terminal Hacker</option>
         </select>
-    </p>
+    </div>
+
+    <!-- Toggle Buttons for View Modes -->
+    <div style="margin-bottom: 20px;">
+        <button id="btnAll" class="view-btn active" onclick="toggleViewMode('all')">Show All Versions</button>
+        <button id="btnBest" class="view-btn" onclick="toggleViewMode('best')">Show Best Version Only</button>
+    </div>
 
     <div class="weights-panel">
         <div>
@@ -209,10 +236,30 @@ v       body.wood details.filter-dropdown summary { background-color: #e6d8c3; c
          JAVASCRIPT (THE "BRAIN")
          ========================================== -->
     <script>
+        var currentViewMode = 'all'; // Tracks if we are showing all or best only
+
         // --- Theme Switcher ---
         function changeTheme() {
             var selectedTheme = document.getElementById("themeSelector").value;
             document.body.className = (selectedTheme === "dark") ? "" : selectedTheme;
+        }
+
+        // --- Auto-close dropdowns when clicking away ---
+        document.addEventListener('click', function(e) {
+            const dropdowns = document.querySelectorAll('details.filter-dropdown');
+            dropdowns.forEach(dropdown => {
+                if (!dropdown.contains(e.target)) {
+                    dropdown.removeAttribute('open');
+                }
+            });
+        });
+
+        // --- Toggle View Mode Logic ---
+        function toggleViewMode(mode) {
+            currentViewMode = mode;
+            document.getElementById('btnAll').classList.toggle('active', mode === 'all');
+            document.getElementById('btnBest').classList.toggle('active', mode === 'best');
+            filterTable();
         }
 
         // --- Keep the "#" column numbered 1, 2, 3... ---
@@ -246,15 +293,15 @@ v       body.wood details.filter-dropdown summary { background-color: #e6d8c3; c
             updateRowNumbers();
         }
 
-        // --- Checkbox Filtering Logic ---
+        // --- Checkbox Filtering Logic & Best-per-Family logic ---
         function filterTable() {
             var table = document.getElementById("engineTable");
             var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
             var filterColumns = [3, 4, 5, 6, 7, 8]; 
 
+            // Pass 1: Filter based on checkbox selections
             for (var i = 0; i < rows.length; i++) {
                 var showRow = true;
-                
                 for (var k = 0; k < filterColumns.length; k++) {
                     var colIndex = filterColumns[k];
                     var cellText = rows[i].getElementsByTagName("td")[colIndex].innerText.trim();
@@ -270,8 +317,33 @@ v       body.wood details.filter-dropdown summary { background-color: #e6d8c3; c
                     }
                     if (!passedThisFilter) { showRow = false; break; }
                 }
-                
                 rows[i].style.display = showRow ? "" : "none";
+            }
+
+            // Pass 2: If 'Best Only' is active, hide non-leaders within their family
+            if (currentViewMode === 'best') {
+                var familyLeaders = {}; // Key: Family Name, Value: Row Reference
+
+                for (var i = 0; i < rows.length; i++) {
+                    if (rows[i].style.display === "none") continue;
+
+                    var familyName = rows[i].getElementsByTagName("td")[3].innerText.trim();
+                    var rating = parseInt(rows[i].getElementsByTagName("td")[1].innerText) || 0;
+
+                    // If we haven't seen this family yet, or this row is better than the current leader
+                    if (!familyLeaders[familyName] || rating > familyLeaders[familyName].rating) {
+                        familyLeaders[familyName] = { row: rows[i], rating: rating };
+                    }
+                }
+
+                // Hide all rows that aren't the leader for their family
+                for (var i = 0; i < rows.length; i++) {
+                    if (rows[i].style.display === "none") continue;
+                    var familyName = rows[i].getElementsByTagName("td")[3].innerText.trim();
+                    if (rows[i] !== familyLeaders[familyName].row) {
+                        rows[i].style.display = "none";
+                    }
+                }
             }
             updateRowNumbers();
         }
@@ -290,15 +362,12 @@ v       body.wood details.filter-dropdown summary { background-color: #e6d8c3; c
                 var totalScore = 0;
                 var totalWeight = 0;
 
-                // We read from the hidden original data, NOT from the displayed text. 
-                // This protects the math from breaking when the text says "3623 (3877)".
                 var valCcrl40 = parseFloat(row.dataset.ccrl4040);
                 var valCcrlBl = parseFloat(row.dataset.ccrlblitz);
                 var valSpcc   = parseFloat(row.dataset.spcc);
                 var valIpman  = parseFloat(row.dataset.ipman);
                 var valCegt   = parseFloat(row.dataset.cegt);
 
-                // Apply scales (1.07 or 1.02) then multiply by user weight
                 if (!isNaN(valCcrl40)) { totalScore += (valCcrl40 * 1.07) * wCcrl40; totalWeight += wCcrl40; }
                 if (!isNaN(valCcrlBl)) { totalScore += (valCcrlBl * 1.02) * wCcrlBl; totalWeight += wCcrlBl; }
                 if (!isNaN(valSpcc))   { totalScore += valSpcc * wSpcc;              totalWeight += wSpcc; }
@@ -310,6 +379,7 @@ v       body.wood details.filter-dropdown summary { background-color: #e6d8c3; c
             });
 
             forceSortByRating();
+            filterTable(); // Run filters again to update "Best per family" rankings
         }
 
         // --- Auto-Generate Filter Dropdowns ---
@@ -335,13 +405,8 @@ v       body.wood details.filter-dropdown summary { background-color: #e6d8c3; c
         // --- Helper Function for Dual Display "Original (Scaled)" ---
         function formatRatingCell(rawString, multiplier) {
             if (rawString === "#N/A" || !rawString.trim()) return "-";
-            
             let original = parseFloat(rawString);
-            
-            // If the multiplier is exactly 1 (like SP-CC), just show the original number
             if (multiplier === 1) return original;
-            
-            // Otherwise, calculate the scaled version and show both
             let scaled = Math.round(original * multiplier);
             return `${original} (${scaled})`;
         }
@@ -362,7 +427,6 @@ v       body.wood details.filter-dropdown summary { background-color: #e6d8c3; c
 
                     const tr = document.createElement('tr');
                     
-                    // Store original numerical ratings invisibly inside the row 
                     tr.dataset.ccrl4040 = columns[8].trim();
                     tr.dataset.ccrlblitz = columns[9].trim();
                     tr.dataset.spcc = columns[10].trim();
@@ -380,10 +444,9 @@ v       body.wood details.filter-dropdown summary { background-color: #e6d8c3; c
                         { text: columns[6].trim(), class: "col-meta" }, 
                         { text: columns[7].trim(), class: "col-meta" }, 
                         
-                        // We use our new formatRatingCell helper to generate "Original (Scaled)" text
                         { text: formatRatingCell(columns[8], 1.07), class: "col-list-rating" }, 
                         { text: formatRatingCell(columns[9], 1.02), class: "col-list-rating" }, 
-                        { text: formatRatingCell(columns[10], 1), class: "col-list-rating" }, // Multiplier 1 for SP-CC
+                        { text: formatRatingCell(columns[10], 1), class: "col-list-rating" }, 
                         { text: formatRatingCell(columns[11], 1.07), class: "col-list-rating" }, 
                         { text: formatRatingCell(columns[12], 1.07), class: "col-list-rating" }  
                     ];
@@ -406,11 +469,10 @@ v       body.wood details.filter-dropdown summary { background-color: #e6d8c3; c
                 populateFilters(8, "filter-year");
 
                 calculateRatings();
-                filterTable();
                 
             } catch (error) {
                 console.log("Waiting for server hosting!");
-                document.querySelector("#engineTable tbody").innerHTML = "<tr><td colspan='14'><i>Data will appear here once the site is hosted on a server!</i></td></tr>";
+                document.querySelector("#engineTable tbody").innerHTML = "<tr><td colspan='14'><i>Data Loading...</i></td></tr>";
             }
         }
 
