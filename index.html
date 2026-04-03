@@ -404,8 +404,17 @@
 
         // --- Helper Function for Dual Display "Original (Scaled)" ---
         function formatRatingCell(rawString, multiplier) {
-            if (rawString === "#N/A" || !rawString.trim()) return "-";
-            let original = parseFloat(rawString);
+            // Clean string of invisible characters
+            let cleaned = rawString ? rawString.trim() : "";
+            
+            // Check for known "no data" indicators
+            if (cleaned === "#N/A" || cleaned === "-" || cleaned === "") return "-";
+            
+            let original = parseFloat(cleaned);
+            
+            // Safety check for NaN values
+            if (isNaN(original)) return "-";
+            
             if (multiplier === 1) return original;
             let scaled = Math.round(original * multiplier);
             return `${original} (${scaled})`;
