@@ -8,9 +8,9 @@
 ,Stockfish 15.1,Stockfish,Open,Open,C++,NNUE,2022,3612,3761,3764,#N/A,3573
 ,Torch 2,Torch,Closed,Closed,C++,NNUE,2024,3607,3761,3781,#N/A,3594
 ,Reckless 0.8.0,Reckless,Open,Open,Rust,NNUE,2026,3606,3760,3813,3576 ,3597
-,Torch 4,Torch,Closed,Closed,C++,NNUE,2026,3610,3760,3843,3597 ,3609
+,Torch 4,Torch,Closed,Closed,C++,NNUE,2025,3610,3760,3843,3597 ,3609
 ,Torch 1,Torch,Closed,Closed,C++,NNUE,2023,3608,3755,3747,#N/A,#N/A
-,Torch 3,Torch,Closed,Closed,C++,NNUE,2025,3610,3754,3800,#N/A,3608
+,Torch 3,Torch,Closed,Closed,C++,NNUE,2024,3610,3754,3800,#N/A,3608
 ,PlentyChess 7.0,Plenty,Open,Open,C++,NNUE,2025,3607,3752,3812,3577 ,3601
 ,Obsidian 16.0,Obsidian,Open,Open,C++,NNUE,2025,3603,3751,3810,3575 ,3595
 ,Alexandria 9.0,Alexandria,Open,Open,C++,NNUE,2026,3603,3748,3794,3566 ,3588
@@ -54,7 +54,7 @@
 ,PlentyChess 3.0,Plenty,Open,Open,C++,NNUE,2024,3576,3707,3691,#N/A,3554
 ,Dragon by Komodo 2.6,Komodo,Closed,Closed,C++,NNUE,2021,3569,3704,#N/A,#N/A,3538
 ,Lizard 11.2,Lizard,Open,Open,C++,NNUE,2025,3569,3704,#N/A,#N/A,3549
-,Lc0 0.29.0,Lc0,Open,Open,C++,NNUE,2022,#N/A,3703,#N/A,#N/A,#N/A
+,Lc0 0.29.0,Lc0,Open,Open,C++,DNNs,2022,#N/A,3703,#N/A,#N/A,#N/A
 ,Alexandria 7.0,Alexandria,Open,Open,C++,NNUE,2024,3569,3701,3651,#N/A,3551
 ,Caissa 1.20,Caissa,Open,Open,C++,NNUE,2024,3574,3701,3682,#N/A,3546
 ,Stoofvlees II,Stoofvlees,Closed,Closed,C++,NNUE,2026,#N/A,3701,#N/A,#N/A,#N/A
