@@ -2,38 +2,41 @@
 
 ChessTubeTree is a unified rating list for the world's strongest chess engines. 
 
-This project provides a real-time, interactive ranking table that calculates a **Main Rating** based on a weighted average of several independent computer chess rating pools.
+This project provides an interactive ranking table that calculates a **Main Rating** based on a weighted average of several independent computer chess rating pools.
 
 ### ✨ Features
 
 * **Dynamic Weighted Average:** Users can adjust the weight of each source list to calculate their own custom rankings.
-* **Pool Scaling:** Automatically applies 1.07x and 1.02x multipliers to normalize differences in rating scales across different testing environments.
-* **Interactive Filtering:** Filter engines by Family, Language (C++, Rust, etc.), Access (Public/Private), and more.
-* **Theme Support:** Switch between Dark Mode, Classic Wooden, and Terminal Hacker themes.
+* **Smart View Toggle:** Switch between viewing every engine version or the **"Best Version Only"** (which automatically shows only the top-rated version for each engine family).
+* **Pool Scaling:** Automatically applies normalization multipliers to different rating pools to ensure a fair and accurate "Main Rating."
+* **Interactive Filtering:** Filter engines by Family, Language (C++, Rust, etc.), Access (Public/Private), and Release Year. Dropdown menus auto-close for a cleaner experience.
+* **Theme Support:** Switch between **Dark Mode**, **Classic Wooden**, and **Terminal Hacker** themes.
 
 ### 📊 Methodology
 
-To calculate the **Main Rating**, we use data from five major rating lists. Because these lists use different anchors, we scale them as follows before averaging:
+To calculate the **Main Rating**, we use data from five major rating lists. Because these lists use different anchors and hardware scales, we normalize them as follows before averaging:
 
-* **CCRL 40/40:** 1.07x
-* **CCRL Blitz:** 1.02x
-* **Ipman:** 1.07x
-* **CEGT:** 1.07x
+* **CCRL 40/40:** 1.05x
+* **Ipman:** 1.06x
+* **CEGT:** 1.05x
+* **CCRL Blitz:** 1.00x (Baseline)
 * **SP-CC:** 1.00x (Baseline)
+
+On the website, these are displayed as **Original Rating (Scaled Rating)** for full transparency.
 
 ### 🙏 Credits & Data Sources
 
 We would like to thank the following organizations and individuals for providing the testing data that makes this list possible:
 
 * **CCRL (Computer Chess Rating Lists)**
-  * [https://computerchess.org.uk/4040/rating\_list\_all.html]()
-  * [https://computerchess.org.uk/404/rating_list_all.html]()
+  * [40/40 List](https://computerchess.org.uk/4040/rating_list_all.html)
+  * [Blitz List](https://computerchess.org.uk/404/rating_list_all.html)
 * **SP-CC (Strategy Puzzles - Computer Chess)**
-  * [https://www.sp-cc.de/]()
+  * [Official Website](https://www.sp-cc.de/)
 * **Ipman Chess**
-  * [https://ipmanchess.yolasite.com/r9-7945hx.php]()
+  * [Rating Benchmarks](https://ipmanchess.yolasite.com/r9-7945hx.php)
 * **CEGT (Chess Engine Grand Tournament)**
-  * [http://www.cegt.net/40\_40%20Rating%20List/40\_40%20All%20Versions/rangliste.html]()
+  * [40/20 Rating List](http://www.cegt.net/40_40%20Rating%20List/40_40%20All%20Versions/rangliste.html)
 
 ### 🛠️ Contribute
 
